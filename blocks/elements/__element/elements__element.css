@@ -1,0 +1,17 @@
+.elements__element {
+  display: flex;
+  flex-direction: column;
+  max-width: 282px;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-right: 17px;
+  margin-bottom: 20px;
+}
+
+.elements__element:nth-child(3n) {
+  margin-right: 0;
+}
+
+.elements__element:nth-last-of-type(-n+3) {
+  margin-bottom: 0;
+}
