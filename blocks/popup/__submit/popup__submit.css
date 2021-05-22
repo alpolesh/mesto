@@ -6,4 +6,10 @@
   font-size: 18px;
   line-height: 22px;
   color: #FFFFFF;
+  transition: opacity 200ms ease-in-out;
+}
+
+.popup__submit:hover {
+  cursor: pointer;
+  opacity: 0.8;
 }
