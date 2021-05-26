@@ -15,3 +15,9 @@
   cursor: pointer;
   opacity: 0.6;
 }
+
+@media screen and (max-width: 590px) {
+  .profile__add-button-container {
+    width: 100%;
+  }
+}
