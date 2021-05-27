@@ -11,107 +11,113 @@
   <div class="page">
 
     <div class="popup">
-      <form class="popup__popup-container">
-        <img src="./images/Close-Icon.svg" alt="иконка закрытия поп-апа" class="popup__close-icon">
-        <legend class="popup__title">Редактировать профиль</legend>
-        <input type="text" class="popup__name">
-        <input type="text" class="popup__description">
-        <input type="submit" value="Сохранить" class="popup__submit">
-      </form>
+      <div class="popup__popup-container">
+        <form name="popup-form" class="popup__form">
+          <button class="popup__close" type="button">
+            <img src="./images/Close-Icon.svg" alt="иконка закрытия поп-апа" class="popup__close-icon">
+          </button>
+          <h2 class="popup__title">Редактировать профиль</h2>
+          <input type="text" class="popup__input popup__input_type_name" name="popup-name">
+          <input type="text" class="popup__input popup__input_type_description" name="popup-description">
+          <button type="submit" class="popup__submit">Сохранить</button>
+        </form>
+      </div>
     </div>
 
     <header class="header">
       <img class="header__logo" src="./images/header-logo.svg" alt="логотип">
     </header>
 
-    <section class="profile">
-      <div class="profile__info-container">
-        <img src="./images/profile-avatar.jpg" alt="аватар" class="profile__avatar">
-        <div class="profile__info">
-          <div class="profile__name-container">
-            <h1 class="profile__name">Жак-Ив Кусто</h1>
-            <button class="profile__edit-button-container">
-              <img src="./images/profile-edit-Button.svg" alt="изменить профиль" class="profile__edit-button">
-            </button>
+    <main class="main">
+      <section class="profile">
+        <div class="profile__info-container">
+          <img src="./images/profile-avatar.jpg" alt="аватар" class="profile__avatar">
+          <div class="profile__info">
+            <div class="profile__name-container">
+              <h1 class="profile__name">Жак-Ив Кусто</h1>
+              <button class="profile__edit-button-container">
+                <img src="./images/profile-edit-Button.svg" alt="изменить профиль" class="profile__edit-button">
+              </button>
+            </div>
+            <p class="profile__description">Исследователь океана</p>
           </div>
-          <p class="profile__description">Исследователь океана</p>
+  
         </div>
-
-      </div>
-      <button class="profile__add-button-container">
-        <img src="./images/profile-add-Button.svg" alt="добавить изображение" class="profile__add-button">
-      </button>
-    </section>
-
-    <section class="elements">
-      <ul class="elements__list">
-        <li class="elements__element">
-          <img src="./images/element-karachaevsk.jpg" alt="карачаевск" class="elements__image">
-          <div class="elements__description">
-            <h2 class="elements__name">
-              Карачаевск
-            </h2>
-            <div class="elements__heart"></div>
-          </div>
-        </li>
-
-        <li class="elements__element">
-          <img src="./images/element-elbrus.jpg" alt="эльбрус" class="elements__image">
-          <div class="elements__description">
-            <h2 class="elements__name">
-              Гора Эльбрус
-            </h2>
-            <div class="elements__heart"></div>
-          </div>
-        </li>
-
-        <li class="elements__element">
-          <img src="./images/element-dombay.jpg" alt="домбай" class="elements__image">
-          <div class="elements__description">
-            <h2 class="elements__name">
-              Домбай
-            </h2>
-            <div class="elements__heart"></div>
-          </div>
-        </li>
-
-        <li class="elements__element">
-          <img src="./images/element-elbrus.jpg" alt="эльбрус" class="elements__image">
-          <div class="elements__description">
-            <h2 class="elements__name">
-              Гора Эльбрус
-            </h2>
-            <div class="elements__heart"></div>
-          </div>
-        </li>
-
-        <li class="elements__element">
-          <img src="./images/element-dombay.jpg" alt="домбай" class="elements__image">
-          <div class="elements__description">
-            <h2 class="elements__name">
-              Домбай
-            </h2>
-            <div class="elements__heart"></div>
-          </div>
-        </li>
-
-        <li class="elements__element">
-          <img src="./images/element-karachaevsk.jpg" alt="карачаевск" class="elements__image">
-          <div class="elements__description">
-            <h2 class="elements__name">
-              Карачаево-Черкасский монастырь
-            </h2>
-            <div class="elements__heart"></div>
-          </div>
-        </li>
-      </ul>
-    </section>
+        <button class="profile__add-button-container">
+          <img src="./images/profile-add-Button.svg" alt="добавить изображение" class="profile__add-button">
+        </button>
+      </section>
+  
+      <section class="elements">
+        <ul class="elements__list">
+          <li class="elements__element">
+            <img src="./images/element-karachaevsk.jpg" alt="карачаевск" class="elements__image">
+            <div class="elements__description">
+              <h2 class="elements__name">
+                Карачаевск
+              </h2>
+              <button class="elements__heart" type="button"></button>
+            </div>
+          </li>
+  
+          <li class="elements__element">
+            <img src="./images/element-elbrus.jpg" alt="эльбрус" class="elements__image">
+            <div class="elements__description">
+              <h2 class="elements__name">
+                Гора Эльбрус
+              </h2>
+              <button class="elements__heart" type="button"></button>
+            </div>
+          </li>
+  
+          <li class="elements__element">
+            <img src="./images/element-dombay.jpg" alt="домбай" class="elements__image">
+            <div class="elements__description">
+              <h2 class="elements__name">
+                Домбай
+              </h2>
+              <button class="elements__heart" type="button"></button>
+            </div>
+          </li>
+  
+          <li class="elements__element">
+            <img src="./images/element-elbrus.jpg" alt="эльбрус" class="elements__image">
+            <div class="elements__description">
+              <h2 class="elements__name">
+                Гора Эльбрус
+              </h2>
+              <button class="elements__heart" type="button"></button>
+            </div>
+          </li>
+  
+          <li class="elements__element">
+            <img src="./images/element-dombay.jpg" alt="домбай" class="elements__image">
+            <div class="elements__description">
+              <h2 class="elements__name">
+                Домбай
+              </h2>
+              <button class="elements__heart" type="button"></button>
+            </div>
+          </li>
+  
+          <li class="elements__element">
+            <img src="./images/element-karachaevsk.jpg" alt="карачаевск" class="elements__image">
+            <div class="elements__description">
+              <h2 class="elements__name">
+                Карачаево-Черкасский монастырь
+              </h2>
+              <button class="elements__heart" type="button"></button>
+            </div>
+          </li>
+        </ul>
+      </section>
+    </main>
 
     <footer class="footer">
-      &copy; 2020 Mesto Russia
+      <p class="footer__text">&copy; 2020 Mesto Russia</p>
     </footer>
   </div>
 
-  <script src="./script.js"></script>
+  <script src="./scripts/script.js"></script>
 </body>
 </html>

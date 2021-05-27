@@ -3,8 +3,8 @@ let profileElement = document.querySelector('.profile');
 let editButton = profileElement.querySelector('.profile__edit-button-container');
 let closeButton = formElement.querySelector('.popup__close-icon');
 let popup = document.querySelector('.popup');
-let formName = formElement.querySelector('.popup__name');
-let formDescription = formElement.querySelector('.popup__description');
+let formName = formElement.querySelector('.popup__input_type_name');
+let formDescription = formElement.querySelector('.popup__input_type_description');
 let profileName = profileElement.querySelector('.profile__name');
 let profileDescription = profileElement.querySelector('.profile__description');
 let saveButton = formElement.querySelector('.popup__submit');
@@ -31,11 +31,13 @@ closeButton.addEventListener('click', () => {
 })
 
 // Submit формы 
-formElement.addEventListener('submit', (evt) => {
+formElement.addEventListener('submit', handleSubmit)
+
+function handleSubmit(evt) {
   evt.preventDefault();
   profileName.textContent = formName.value;
   profileDescription.textContent = formDescription.value;
   popup.classList.remove('popup_opened');
   document.removeEventListener('keydown', enterListener, false);
-})
+}
 

@@ -14,3 +14,10 @@
   cursor: pointer;
   opacity: 0.6;
 }
+
+@media screen and (max-width: 590px) {
+  .profile__edit-button-container {
+    width: 18px;
+    height: 18px;
+  }
+}

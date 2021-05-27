@@ -4,7 +4,7 @@
   border: none;
   border-radius: 2px;
   font-size: 18px;
-  line-height: 22px;
+  line-height: 1.22;
   color: #FFFFFF;
   transition: opacity 200ms ease-in-out;
 }
@@ -12,4 +12,11 @@
 .popup__submit:hover {
   cursor: pointer;
   opacity: 0.8;
+}
+
+@media screen and (max-width: 590px) {
+  .popup__submit {
+    font-size: 14px;
+    line-height: 1.21;
+  }
 }

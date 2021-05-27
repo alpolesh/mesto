@@ -1,4 +1,4 @@
-.popup__name {
+.popup__input {
   border: none;
   border-bottom: 1px solid rgba(0, 0, 0, .2);
   margin-bottom: 30px;
@@ -7,4 +7,8 @@
   min-height: 27px;
   outline-color: blue;
   padding-left: 5px;
+}
+
+.popup__input:last-child {
+  margin-bottom: 48px;
 }
