@@ -19,5 +19,7 @@
   .profile__edit-button-container {
     width: 18px;
     height: 18px;
+    position: absolute;
+    right: -25px;
   }
 }
