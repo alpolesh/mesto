@@ -26,6 +26,11 @@ const elementTemplate = document.querySelector('#element-template').content;
 const elementsList = document.querySelector('.elements__list');
 const cardElement = elementTemplate.querySelector('.elements__element');
 
+const imageViewer = document.querySelector('.image-viewer');
+const closeImageViewer = imageViewer.querySelector('.image-viewer__close');
+const fullImage = imageViewer.querySelector('.image-viewer__image');
+const fullImageDescription = imageViewer.querySelector('.image-viewer__description');
+
 // Открытие формы редактирования профиля
 editButton.addEventListener('click', () => {
   popupEdit.classList.add('popup_opened');
@@ -131,6 +136,21 @@ elementsList.addEventListener('click', (evt) => {
   if (evt.target.classList.contains('elements__trash')) {
     evt.target.closest('.elements__element').remove();
   }
+})
+
+//Открытие попапа с картинкой
+elementsList.addEventListener('click', (evt) => {
+  if (evt.target.classList.contains('elements__image')) {
+    fullImage.src = evt.target.src;
+    fullImage.alt = evt.target.alt;
+    fullImageDescription.textContent = evt.target.alt;
+    imageViewer.classList.add('image-viewer_opened');
+  }
+})
+
+//Закрытие попапа с картинкой
+closeImageViewer.addEventListener('click', () => {
+  imageViewer.classList.remove('image-viewer_opened');
 })
 
 

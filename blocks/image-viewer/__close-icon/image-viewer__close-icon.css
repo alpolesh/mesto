@@ -1,0 +1,16 @@
+.image-viewer__close-icon {
+  width: 56.5px;
+  height: 56.5px;
+}
+
+.image-viewer__close-icon:hover {
+  opacity: 0.6;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 590px) {
+  .image-viewer__close-icon {
+    width: 37px;
+    height: 37px;
+  }
+}

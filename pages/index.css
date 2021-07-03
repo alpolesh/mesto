@@ -11,6 +11,13 @@
 @import url(../blocks/popup/__close/popup__close.css);
 @import url(../blocks/popup/__close-icon/popup__close-icon.css);
 @import url(../blocks/popup/_opened/popup_opened.css);
+@import url(../blocks/image-viewer/image-viewer.css);
+@import url(../blocks/image-viewer/_opened/image-viewer_opened.css);
+@import url(../blocks/image-viewer/__container/image-viewer__container.css);
+@import url(../blocks/image-viewer/__close/image-viewer__close.css);
+@import url(../blocks/image-viewer/__close-icon/image-viewer__close-icon.css);
+@import url(../blocks/image-viewer/__image/image-viewer__image.css);
+@import url(../blocks/image-viewer/__description/image-viewer__description.css);
 @import url(../blocks/header/header.css);
 @import url(../blocks/header/__logo/header__logo.css);
 @import url(../blocks/profile/profile.css);
