@@ -126,6 +126,14 @@ elementsList.addEventListener('click', (evt) => {
   }
 })
 
+//Удаление карточки
+elementsList.addEventListener('click', (evt) => {
+  if (evt.target.classList.contains('elements__trash')) {
+    evt.target.closest('.elements__element').remove();
+  }
+})
+
+
 
 
 
