@@ -43,6 +43,11 @@ function closePopup(popup) {
   popup.classList.remove('popup_opened');
 }
 
+//Функция очистки формы
+function cleanForm(form) {
+  form.reset();
+}
+
 // Открытие формы редактирования профиля
 editButton.addEventListener('click', () => {
   openPopup(popupEdit);
@@ -53,8 +58,7 @@ editButton.addEventListener('click', () => {
 // Закрытие формы редактирования профиля при нажатии на крестик
 closeButtonEdit.addEventListener('click', () => {
   closePopup(popupEdit);
-  formNameEdit.value = '';
-  formDescriptionEdit.value = '';
+  cleanForm(formEdit);
 })
 
 // Submit формы редактирования профиля
@@ -108,8 +112,7 @@ addButton.addEventListener('click', () => {
 //закрытие формы добавления карточки
 closeButtonAddCard.addEventListener('click', () => {
   closePopup(popupAddCard);
-  formNameCard.value = '';
-  formSourceCard.value = '';
+  cleanForm(formAddCard);
 })
 
 //Submit формы добавления карточки
@@ -118,8 +121,7 @@ formAddCard.addEventListener('submit', handleSubmitAddCard)
 function handleSubmitAddCard(evt) {
   evt.preventDefault();
   elementsList.prepend(createCard(formSourceCard.value, formNameCard.value));
-  formNameCard.value = '';
-  formSourceCard.value = '';
+  cleanForm(formAddCard);
   closePopup(popupAddCard);
 }
 
