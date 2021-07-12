@@ -36,6 +36,7 @@ const fullImageDescription = imageViewer.querySelector('.image-viewer__descripti
 //Функция открытия попапа
 function openPopup(popup) {
   popup.classList.add('popup_opened');
+  saveButtonEdit.classList.remove('popup__submit_inactive');
 }
 
 //Функция закрытия попапа
