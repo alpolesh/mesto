@@ -46,6 +46,12 @@ function closePopup(popup) {
 //Функция очистки формы
 function cleanForm(form) {
   form.reset();
+  Array.from(form.querySelectorAll('.popup__input-error')).forEach((inputEerror) => {
+    inputEerror.textContent = '';
+  })
+  Array.from(form.querySelectorAll('.popup__input')).forEach((inputElement) => {
+    inputElement.classList.remove('popup__input_type_error');
+  })
 }
 
 // Открытие формы редактирования профиля

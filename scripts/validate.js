@@ -1,26 +1,40 @@
 // Валидация формы "Редактировать профиль"
-
 const popupEdit = document.querySelector('.popup-edit');
-const formEdit = popupEdit.querySelector('.popup__form');
-const inputElement = formEdit.querySelector('.popup__input_type_name');
+const formElement = popupEdit.querySelector('.popup__form');
+// const inputElement = formElement.querySelector('.popup__input_type_name');
 
 // Функция отображения ошибки под инпутом
-function showInputError(inputElement) {
+function showInputError(formElement, inputElement, errorMessage) {
+  const inputError = formElement.querySelector(`.${inputElement.id}-error`);
   inputElement.classList.add('popup__input_type_error');
+  inputError.textContent = errorMessage;
+  inputError.classList.add('popup__input-error_active');
 }
 
 // Функция удаления ошибки под инпутом
-function hideInputError(inputElement) {
+function hideInputError(formElement, inputElement) {
+  const inputError = formElement.querySelector(`.${inputElement.id}-error`);
   inputElement.classList.remove('popup__input_type_error');
+  inputError.classList.remove('popup__input-error_active');
+  inputError.textContent = '';
 }
 
 // Коллбэк для проверки валидности инпута
-function isValid() {
+function checkInputValidity(formElement, inputElement) {
   if (!inputElement.validity.valid) {
-    showInputError(inputElement);
+    showInputError(formElement, inputElement, inputElement.validationMessage);
   } else {
-    hideInputError(inputElement);
+    hideInputError(formElement, inputElement);
   }
 }
 
-inputElement.addEventListener('input', isValid);
+function setEventListeners(formElement) {
+  const inputList = Array.from(formElement.querySelectorAll('.popup__input'));
+  inputList.forEach((inputElement) => {
+    inputElement.addEventListener('input', function() {
+      checkInputValidity(formElement, inputElement);
+    });
+  })
+}
+
+setEventListeners(formElement);
