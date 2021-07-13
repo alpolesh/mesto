@@ -1,6 +1,4 @@
-// Валидация формы "Редактировать профиль"
-const popupEdit = document.querySelector('.popup-edit');
-const formElement = popupEdit.querySelector('.popup__form');
+
 
 // Функция отображения ошибки под инпутом
 function showInputError(formElement, inputElement, errorMessage) {
@@ -55,5 +53,14 @@ function setEventListeners(formElement) {
   })
 }
 
-setEventListeners(formElement);
+// Валидация формы "Редактировать профиль"
+const popupEdit = document.querySelector('.popup-edit');
+const formElementEdit = popupEdit.querySelector('.popup__form');
 
+setEventListeners(formElementEdit);
+
+// Валидация формы "Добавить новое место"
+const popupPlace = document.querySelector('.popup-add-card');
+const formElementPlace = popupPlace.querySelector('.popup__form');
+
+setEventListeners(formElementPlace);

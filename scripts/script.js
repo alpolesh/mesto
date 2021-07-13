@@ -37,6 +37,8 @@ const fullImageDescription = imageViewer.querySelector('.image-viewer__descripti
 function openPopup(popup) {
   popup.classList.add('popup_opened');
   saveButtonEdit.classList.remove('popup__submit_inactive');
+  saveButtonAddCard.classList.add('popup__submit_inactive');
+  setEventlistenerOverlay(popup);
 }
 
 //Функция закрытия попапа
@@ -67,6 +69,17 @@ closeButtonEdit.addEventListener('click', () => {
   closePopup(popupEdit);
   cleanForm(formEdit);
 })
+
+// Функция добавления слушателя на попап для закрытия при клике по оверлею
+function setEventlistenerOverlay(popup) {
+  const form = popup.querySelector('.popup__form');
+  popup.addEventListener('click', (evt) => {
+    if (evt.target.classList.contains('popup_opened')) {
+      closePopup(popup);
+      if (form) cleanForm(form);
+    }
+  })
+}
 
 // Submit формы редактирования профиля
 formEdit.addEventListener('submit', handleSubmitEdit)
@@ -136,6 +149,7 @@ function handleSubmitAddCard(evt) {
 closeImageViewer.addEventListener('click', () => {
   closePopup(imageViewer);
 })
+
 
 
 
