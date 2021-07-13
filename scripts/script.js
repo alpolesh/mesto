@@ -38,12 +38,14 @@ function openPopup(popup) {
   popup.classList.add('popup_opened');
   saveButtonEdit.classList.remove('popup__submit_inactive');
   saveButtonAddCard.classList.add('popup__submit_inactive');
-  setEventlistenerOverlay(popup);
+  setEventlistenerPopupOverlay(popup);
+  setEventlistenerPopupEscButton(popup);
 }
 
 //Функция закрытия попапа
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
+  document.removeEventListener('keydown', closePopupWithESCButton)
 }
 
 //Функция очистки формы
@@ -71,7 +73,7 @@ closeButtonEdit.addEventListener('click', () => {
 })
 
 // Функция добавления слушателя на попап для закрытия при клике по оверлею
-function setEventlistenerOverlay(popup) {
+function setEventlistenerPopupOverlay(popup) {
   const form = popup.querySelector('.popup__form');
   popup.addEventListener('click', (evt) => {
     if (evt.target.classList.contains('popup_opened')) {
@@ -79,6 +81,21 @@ function setEventlistenerOverlay(popup) {
       if (form) cleanForm(form);
     }
   })
+}
+
+// Функция закрытия попапа при ESC
+function closePopupWithESCButton(evt) {
+  const popup = document.querySelector('.popup_opened');
+  const form = popup.querySelector('.popup__form');
+  if (evt.key === 'Escape') {
+    closePopup(popup);
+    if (form) cleanForm(form);
+  }
+}
+
+// Функция добавления слушателя на попап для закрытия при ESC
+function setEventlistenerPopupEscButton(popup) {
+  document.addEventListener('keydown', closePopupWithESCButton)
 }
 
 // Submit формы редактирования профиля
