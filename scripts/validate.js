@@ -1,27 +1,27 @@
-
-
 // Функция отображения ошибки под инпутом
-function showInputError(formElement, inputElement, errorMessage) {
+function showInputError(formElement, inputElement, errorMessage, config) {
+  const {inputErrorClass, errorClass} = config;
   const inputError = formElement.querySelector(`.${inputElement.id}-error`);
-  inputElement.classList.add('popup__input_type_error');
+  inputElement.classList.add(inputErrorClass);
   inputError.textContent = errorMessage;
-  inputError.classList.add('popup__input-error_active');
+  inputError.classList.add(errorClass);
 }
 
 // Функция удаления ошибки под инпутом
-function hideInputError(formElement, inputElement) {
+function hideInputError(formElement, inputElement, config) {
+  const {inputErrorClass, errorClass} = config;
   const inputError = formElement.querySelector(`.${inputElement.id}-error`);
-  inputElement.classList.remove('popup__input_type_error');
-  inputError.classList.remove('popup__input-error_active');
+  inputElement.classList.remove(inputErrorClass);
+  inputError.classList.remove(errorClass);
   inputError.textContent = '';
 }
 
 // Коллбэк для проверки валидности инпута
-function checkInputValidity(formElement, inputElement) {
+function checkInputValidity(formElement, inputElement, config) {
   if (!inputElement.validity.valid) {
-    showInputError(formElement, inputElement, inputElement.validationMessage);
+    showInputError(formElement, inputElement, inputElement.validationMessage, config);
   } else {
-    hideInputError(formElement, inputElement);
+    hideInputError(formElement, inputElement, config);
   }
 }
 
@@ -33,34 +33,42 @@ function hasInvalidInput(inputList) {
 }
 
 // Функция активации и дезактивации кнопки Submit
-function toggleButtonState(inputList, buttonElement) {
+function toggleButtonState(inputList, buttonElement, config) {
+  const {inactiveButtonClass} = config;
   if (hasInvalidInput(inputList)) {
-    buttonElement.classList.add('popup__submit_inactive');
+    buttonElement.classList.add(inactiveButtonClass);
   } else {
-    buttonElement.classList.remove('popup__submit_inactive');
+    buttonElement.classList.remove(inactiveButtonClass);
   }
 }
 
-function setEventListeners(formElement) {
-  const inputList = Array.from(formElement.querySelectorAll('.popup__input'));
-  const buttonElement = formElement.querySelector('.popup__submit');
-  toggleButtonState(inputList, buttonElement);
+// Функция навешивания слушателей на все инпуты формы
+function setEventListeners(formElement, config) {
+  const {inputSelector, submitButtonSelector} = config;
+  const inputList = Array.from(formElement.querySelectorAll(inputSelector));
+  const buttonElement = formElement.querySelector(submitButtonSelector);
+  toggleButtonState(inputList, buttonElement, config);
   inputList.forEach((inputElement) => {
     inputElement.addEventListener('input', function() {
-      checkInputValidity(formElement, inputElement);
-      toggleButtonState(inputList, buttonElement);
+      checkInputValidity(formElement, inputElement, config);
+      toggleButtonState(inputList, buttonElement, config);
     });
   })
 }
 
-// Валидация формы "Редактировать профиль"
-const popupEdit = document.querySelector('.popup-edit');
-const formElementEdit = popupEdit.querySelector('.popup__form');
+// Включение валидации для всех форм
+function enableValidation({formSelector, ...config}) {
+  const formList = Array.from(document.querySelectorAll(formSelector));
+  formList.forEach((formElement) => {
+    setEventListeners(formElement, config);
+  })
+}
 
-setEventListeners(formElementEdit);
-
-// Валидация формы "Добавить новое место"
-const popupPlace = document.querySelector('.popup-add-card');
-const formElementPlace = popupPlace.querySelector('.popup__form');
-
-setEventListeners(formElementPlace);
+enableValidation({
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__submit',
+  inactiveButtonClass: 'popup__submit_inactive',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__input-error_active',
+})

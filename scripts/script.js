@@ -1,13 +1,11 @@
 import {initialCards} from './initial-cards.js';
 
 const popupEdit = document.querySelector('.popup-edit');
-const formElementEdit = popupEdit.querySelector('.popup__popup-container');
 const closeButtonEdit = popupEdit.querySelector('.popup__close-icon');
 const formNameEdit = popupEdit.querySelector('.popup__input_type_name');
 const formDescriptionEdit = popupEdit.querySelector('.popup__input_type_description');
 const saveButtonEdit = popupEdit.querySelector('.popup__submit');
 const formEdit = popupEdit.querySelector('.popup__form');
-
 
 const popupAddCard = document.querySelector('.popup-add-card');
 const formAddCard = popupAddCard.querySelector('.popup__form');
@@ -16,13 +14,11 @@ const closeButtonAddCard = popupAddCard.querySelector('.popup__close-icon');
 const formNameCard = popupAddCard.querySelector('.popup__input_type_name');
 const formSourceCard = popupAddCard.querySelector('.popup__input_type_description');
 
-
 const profileElement = document.querySelector('.profile');
 const editButton = profileElement.querySelector('.profile__edit-button-container');
 const profileName = profileElement.querySelector('.profile__name');
 const profileDescription = profileElement.querySelector('.profile__description');
 const addButton = profileElement.querySelector('.profile__add-button-container');
-
 
 const elementTemplate = document.querySelector('#element-template').content;
 const elementsList = document.querySelector('.elements__list');
