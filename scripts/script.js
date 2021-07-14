@@ -41,7 +41,8 @@ function openPopup(popup) {
 //Функция закрытия попапа
 function closePopup(popup) {
   popup.classList.remove('popup_opened');
-  document.removeEventListener('keydown', closePopupWithESCButton)
+  document.removeEventListener('keydown', closePopupWithESCButton);
+  popup.removeEventListener('click', closePopupWithClickOnOverlay);
 }
 
 //Функция очистки формы
@@ -49,6 +50,7 @@ function cleanForm(form) {
   form.reset();
   Array.from(form.querySelectorAll('.popup__input-error')).forEach((inputEerror) => {
     inputEerror.textContent = '';
+    inputEerror.classList.remove('popup__input-error_active');
   })
   Array.from(form.querySelectorAll('.popup__input')).forEach((inputElement) => {
     inputElement.classList.remove('popup__input_type_error');
@@ -68,15 +70,19 @@ closeButtonEdit.addEventListener('click', () => {
   cleanForm(formEdit);
 })
 
+// Функция закрытия попала при клике по оверлею
+function closePopupWithClickOnOverlay(evt) {
+  const popup = document.querySelector('.popup_opened');
+  const form = popup.querySelector('.popup__form');
+  if (evt.target.classList.contains('popup_opened')) {
+    closePopup(popup);
+    if (form) cleanForm(form);
+  }
+}
+
 // Функция добавления слушателя на попап для закрытия при клике по оверлею
 function setEventlistenerPopupOverlay(popup) {
-  const form = popup.querySelector('.popup__form');
-  popup.addEventListener('click', (evt) => {
-    if (evt.target.classList.contains('popup_opened')) {
-      closePopup(popup);
-      if (form) cleanForm(form);
-    }
-  })
+  popup.addEventListener('click', closePopupWithClickOnOverlay)
 }
 
 // Функция закрытия попапа при ESC
@@ -107,19 +113,23 @@ function handleSubmitEdit(evt) {
 //функция создания карточки
 function createCard(imageLink, imageName) {
   const element = cardElement.cloneNode(true);
-  element.querySelector('.elements__image').src = imageLink;
-  element.querySelector('.elements__image').alt = imageName;
-  element.querySelector('.elements__name').textContent = imageName;
+  const elementImageSelector = element.querySelector('.elements__image');
+  const elementNameSelector = element.querySelector('.elements__name');
+  const elementHeartSelector = element.querySelector('.elements__heart');
+  const elementTrashSelector = element.querySelector('.elements__trash');
+  elementImageSelector.src = imageLink;
+  elementImageSelector.alt = imageName;
+  elementNameSelector.textContent = imageName;
   //обработчик лайка карточки
-  element.querySelector('.elements__heart').addEventListener('click', (evt) => {
+  elementHeartSelector.addEventListener('click', (evt) => {
     evt.target.classList.toggle('elements__heart_active');
   })
   //обработчик удаления карточки
-  element.querySelector('.elements__trash').addEventListener('click', (evt) => {
+  elementTrashSelector.addEventListener('click', (evt) => {
     evt.target.closest('.elements__element').remove();
   })
   //обработчик открытия попапа с картинкой
-  element.querySelector('.elements__image').addEventListener('click', (evt) => {
+  elementImageSelector.addEventListener('click', (evt) => {
     fullImage.src = evt.target.src;
     fullImage.alt = evt.target.alt;
     fullImageDescription.textContent = evt.target.alt;
