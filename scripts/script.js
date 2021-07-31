@@ -1,3 +1,4 @@
+import Card from './Card.js';
 import {initialCards} from './initial-cards.js';
 
 const popupEdit = document.querySelector('.popup-edit');
@@ -20,14 +21,11 @@ const profileName = profileElement.querySelector('.profile__name');
 const profileDescription = profileElement.querySelector('.profile__description');
 const addButton = profileElement.querySelector('.profile__add-button-container');
 
-const elementTemplate = document.querySelector('#element-template').content;
+const templateSelectorCard = '#element-template';
 const elementsList = document.querySelector('.elements__list');
-const cardElement = elementTemplate.querySelector('.elements__element');
 
 const imageViewer = document.querySelector('.image-viewer');
 const closeImageViewer = imageViewer.querySelector('.image-viewer__close');
-const fullImage = imageViewer.querySelector('.image-viewer__image');
-const fullImageDescription = imageViewer.querySelector('.image-viewer__description');
 
 //Функция открытия попапа
 function openPopup(popup) {
@@ -101,8 +99,6 @@ function setEventlistenerPopupEscButton(popup) {
 }
 
 // Submit формы редактирования профиля
-formEdit.addEventListener('submit', handleSubmitEdit)
-
 function handleSubmitEdit(evt) {
   evt.preventDefault();
   profileName.textContent = formNameEdit.value;
@@ -110,42 +106,17 @@ function handleSubmitEdit(evt) {
   closePopup(popupEdit);
 }
 
-//функция создания карточки
-function createCard(imageLink, imageName) {
-  const element = cardElement.cloneNode(true);
-  const elementImageSelector = element.querySelector('.elements__image');
-  const elementNameSelector = element.querySelector('.elements__name');
-  const elementHeartSelector = element.querySelector('.elements__heart');
-  const elementTrashSelector = element.querySelector('.elements__trash');
-  elementImageSelector.src = imageLink;
-  elementImageSelector.alt = imageName;
-  elementNameSelector.textContent = imageName;
-  //обработчик лайка карточки
-  elementHeartSelector.addEventListener('click', (evt) => {
-    evt.target.classList.toggle('elements__heart_active');
-  })
-  //обработчик удаления карточки
-  elementTrashSelector.addEventListener('click', (evt) => {
-    evt.target.closest('.elements__element').remove();
-  })
-  //обработчик открытия попапа с картинкой
-  elementImageSelector.addEventListener('click', (evt) => {
-    fullImage.src = evt.target.src;
-    fullImage.alt = evt.target.alt;
-    fullImageDescription.textContent = evt.target.alt;
-    openPopup(imageViewer);
-  })
-  return element;
-}
+formEdit.addEventListener('submit', handleSubmitEdit)
 
-//рендер карточек
+// Рендер карточек
 function renderCards(initialCards) {
-  initialCards.forEach((card) => {
-    elementsList.prepend(createCard(card.link, card.name));
+  initialCards.forEach((data) => {
+    const card = new Card(data, templateSelectorCard);
+    elementsList.prepend(card.createCard());
   })
 }
 
-renderCards(initialCards)
+renderCards(initialCards);
 
 //открытие формы добавления карточки
 addButton.addEventListener('click', () => {
@@ -159,19 +130,23 @@ closeButtonAddCard.addEventListener('click', () => {
 })
 
 //Submit формы добавления карточки
-formAddCard.addEventListener('submit', handleSubmitAddCard)
-
 function handleSubmitAddCard(evt) {
   evt.preventDefault();
-  elementsList.prepend(createCard(formSourceCard.value, formNameCard.value));
+  const cardData = {name: formNameCard.value, link: formSourceCard.value};
+  const newCard = new Card(cardData, templateSelectorCard);
+  elementsList.prepend(newCard.createCard());
   cleanForm(formAddCard);
   closePopup(popupAddCard);
 }
+
+formAddCard.addEventListener('submit', handleSubmitAddCard)
 
 //Закрытие попапа с картинкой
 closeImageViewer.addEventListener('click', () => {
   closePopup(imageViewer);
 })
+
+export {openPopup};
 
 
 
