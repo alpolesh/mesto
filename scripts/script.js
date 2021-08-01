@@ -1,4 +1,5 @@
 import Card from './Card.js';
+import FormValidator from './FormValidator.js';
 import {initialCards} from './initial-cards.js';
 
 const popupEdit = document.querySelector('.popup-edit');
@@ -144,6 +145,21 @@ formAddCard.addEventListener('submit', handleSubmitAddCard)
 //Закрытие попапа с картинкой
 closeImageViewer.addEventListener('click', () => {
   closePopup(imageViewer);
+})
+
+//Запуск валидации для всех форм
+const configSelectors = {
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__submit',
+  inactiveButtonClass: 'popup__submit_inactive',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__input-error_active',
+}
+
+const formList = Array.from(document.querySelectorAll('.popup__form'));
+formList.forEach((formElement) => {
+  const newFormValidator = new FormValidator(configSelectors, formElement);
+  newFormValidator.enableValidation();
 })
 
 export {openPopup};
