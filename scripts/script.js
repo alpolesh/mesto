@@ -1,7 +1,7 @@
 import Card from './Card.js';
 import FormValidator from './FormValidator.js';
 import {initialCards} from './initial-cards.js';
-import {openPopup, closePopup, cleanForm} from './utils/utils.js';
+import {openPopup, closePopup} from './utils/utils.js';
 
 const popupEdit = document.querySelector('.popup-edit');
 const closeButtonEdit = popupEdit.querySelector('.popup__close-icon');
@@ -29,9 +29,35 @@ const elementsList = document.querySelector('.elements__list');
 const imageViewer = document.querySelector('.image-viewer');
 const closeImageViewer = imageViewer.querySelector('.image-viewer__close');
 
+// Рендер карточек
+function renderCards(initialCards) {
+  initialCards.forEach((data) => {
+    const card = new Card(data, templateSelectorCard);
+    elementsList.prepend(card.createCard());
+  })
+}
+
+renderCards(initialCards);
+
+//Запуск валидации для всех форм
+const configSelectors = {
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__submit',
+  inactiveButtonClass: 'popup__submit_inactive',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__input-error_active',
+}
+
+const editFormValidator = new FormValidator(configSelectors, formEdit);
+editFormValidator.enableValidation();
+
+const addCardFormValidator = new FormValidator(configSelectors, formAddCard);
+addCardFormValidator.enableValidation();
+
 // Открытие формы редактирования профиля
 editButton.addEventListener('click', () => {
   openPopup(popupEdit);
+  saveButtonEdit.classList.remove('popup__submit_inactive');
   formNameEdit.value = profileName.textContent;
   formDescriptionEdit.value = profileDescription.textContent;
 });
@@ -39,7 +65,7 @@ editButton.addEventListener('click', () => {
 // Закрытие формы редактирования профиля при нажатии на крестик
 closeButtonEdit.addEventListener('click', () => {
   closePopup(popupEdit);
-  cleanForm(formEdit);
+  editFormValidator.cleanForm();
 })
 
 // Submit формы редактирования профиля
@@ -52,25 +78,16 @@ function handleSubmitEdit(evt) {
 
 formEdit.addEventListener('submit', handleSubmitEdit)
 
-// Рендер карточек
-function renderCards(initialCards) {
-  initialCards.forEach((data) => {
-    const card = new Card(data, templateSelectorCard);
-    elementsList.prepend(card.createCard());
-  })
-}
-
-renderCards(initialCards);
-
 //открытие формы добавления карточки
 addButton.addEventListener('click', () => {
   openPopup(popupAddCard);
+  saveButtonAddCard.classList.add('popup__submit_inactive');
 })
 
 //закрытие формы добавления карточки
 closeButtonAddCard.addEventListener('click', () => {
   closePopup(popupAddCard);
-  cleanForm(formAddCard);
+  addCardFormValidator.cleanForm();
 })
 
 //Submit формы добавления карточки
@@ -79,7 +96,7 @@ function handleSubmitAddCard(evt) {
   const cardData = {name: formNameCard.value, link: formSourceCard.value};
   const newCard = new Card(cardData, templateSelectorCard);
   elementsList.prepend(newCard.createCard());
-  cleanForm(formAddCard);
+  addCardFormValidator.cleanForm();
   closePopup(popupAddCard);
 }
 
@@ -90,20 +107,9 @@ closeImageViewer.addEventListener('click', () => {
   closePopup(imageViewer);
 })
 
-//Запуск валидации для всех форм
-const configSelectors = {
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__submit',
-  inactiveButtonClass: 'popup__submit_inactive',
-  inputErrorClass: 'popup__input_type_error',
-  errorClass: 'popup__input-error_active',
-}
 
-const formList = Array.from(document.querySelectorAll('.popup__form'));
-formList.forEach((formElement) => {
-  const newFormValidator = new FormValidator(configSelectors, formElement);
-  newFormValidator.enableValidation();
-})
+
+
 
 
 

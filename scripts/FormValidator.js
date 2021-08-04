@@ -70,6 +70,18 @@ class FormValidator {
     })
   }
 
+  //Функция очистки формы
+  cleanForm() {
+    this.formElement.reset();
+    Array.from(this.formElement.querySelectorAll('.popup__input-error')).forEach((inputError) => {
+      inputError.textContent = '';
+      inputError.classList.remove('popup__input-error_active');
+    })
+    Array.from(this.formElement.querySelectorAll('.popup__input')).forEach((inputElement) => {
+      inputElement.classList.remove('popup__input_type_error');
+    })
+  }
+
   enableValidation() {
     this._setEventListeners();
   }
