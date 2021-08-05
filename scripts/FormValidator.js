@@ -5,6 +5,7 @@ class FormValidator {
     this.inactiveButtonClass = configSelectors.inactiveButtonClass;
     this.inputErrorClass = configSelectors.inputErrorClass;
     this.errorClass = configSelectors.errorClass;
+    this.inputError = configSelectors.inputError;
     this.formElement = formElement;
   }
 
@@ -73,14 +74,22 @@ class FormValidator {
   //Функция очистки формы
   cleanForm() {
     this.formElement.reset();
-    Array.from(this.formElement.querySelectorAll('.popup__input-error')).forEach((inputError) => {
+    Array.from(this.formElement.querySelectorAll(this.inputError)).forEach((inputError) => {
       inputError.textContent = '';
-      inputError.classList.remove('popup__input-error_active');
+      inputError.classList.remove(this.errorClass);
     })
-    Array.from(this.formElement.querySelectorAll('.popup__input')).forEach((inputElement) => {
-      inputElement.classList.remove('popup__input_type_error');
+    Array.from(this.formElement.querySelectorAll(this.inputSelector)).forEach((inputElement) => {
+      inputElement.classList.remove(this.inputErrorClass);
     })
   }
+
+  enableSubmitButton() {
+    this.formElement.querySelector(this.submitButtonSelector).classList.remove(this.inactiveButtonClass);
+  } 
+
+  disableSubmitButton() {
+    this.formElement.querySelector(this.submitButtonSelector).classList.add(this.inactiveButtonClass); 
+  } 
 
   enableValidation() {
     this._setEventListeners();

@@ -46,6 +46,7 @@ const configSelectors = {
   inactiveButtonClass: 'popup__submit_inactive',
   inputErrorClass: 'popup__input_type_error',
   errorClass: 'popup__input-error_active',
+  inputError: 'popup__input-error',
 }
 
 const editFormValidator = new FormValidator(configSelectors, formEdit);
@@ -57,7 +58,7 @@ addCardFormValidator.enableValidation();
 // Открытие формы редактирования профиля
 editButton.addEventListener('click', () => {
   openPopup(popupEdit);
-  saveButtonEdit.classList.remove('popup__submit_inactive');
+  editFormValidator.enableSubmitButton();
   formNameEdit.value = profileName.textContent;
   formDescriptionEdit.value = profileDescription.textContent;
 });
@@ -81,7 +82,7 @@ formEdit.addEventListener('submit', handleSubmitEdit)
 //открытие формы добавления карточки
 addButton.addEventListener('click', () => {
   openPopup(popupAddCard);
-  saveButtonAddCard.classList.add('popup__submit_inactive');
+  addCardFormValidator.disableSubmitButton();
 })
 
 //закрытие формы добавления карточки
