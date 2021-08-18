@@ -73,12 +73,14 @@ class FormValidator {
 
   //Функция очистки формы
   cleanForm() {
+    const errorsList = Array.from(this.formElement.querySelectorAll(this.inputError));
+    const inputsList = Array.from(this.formElement.querySelectorAll(this.inputSelector))
     this.formElement.reset();
-    Array.from(this.formElement.querySelectorAll(this.inputError)).forEach((inputError) => {
+    errorsList.forEach((inputError) => {
       inputError.textContent = '';
       inputError.classList.remove(this.errorClass);
     })
-    Array.from(this.formElement.querySelectorAll(this.inputSelector)).forEach((inputElement) => {
+    inputsList.forEach((inputElement) => {
       inputElement.classList.remove(this.inputErrorClass);
     })
   }

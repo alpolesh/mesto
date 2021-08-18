@@ -45,7 +45,7 @@
     <div class="popup image-viewer">
       <figure class="image-viewer__container">
         <img src="https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg" alt="камчатка" class="image-viewer__image">
-        <button class="image-viewer__close" type="button">
+        <button class="image-viewer__close popup__close" type="button">
           <img src="./images/Close-Icon.svg" alt="иконка закрытия изображения" class="image-viewer__close-icon">
         </button>
         <figcaption class="image-viewer__description">Камчатка</figcaption>
@@ -78,19 +78,20 @@
   
       <section class="elements">
         <ul class="elements__list">
-          <template id="element-template">
-            <li class="elements__element">
-              <img src="plug" alt="" class="elements__image">
-              <div class="elements__description">
-                <h2 class="elements__name"></h2>
-                <button class="elements__heart" type="button"></button>
-              </div>
-              <button class="elements__trash" type="button"></button>
-            </li>
-          </template>
         </ul>
       </section>
     </main>
+
+    <template id="element-template">
+      <li class="elements__element">
+        <img src="plug" alt="" class="elements__image">
+        <div class="elements__description">
+          <h2 class="elements__name"></h2>
+          <button class="elements__heart" type="button"></button>
+        </div>
+        <button class="elements__trash" type="button"></button>
+      </li>
+    </template>
 
     <footer class="footer">
       <p class="footer__text">&copy; 2020 Mesto Russia</p>

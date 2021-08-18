@@ -1,14 +1,9 @@
-import {openPopup} from './utils/utils.js';
-
-const imageViewer = document.querySelector('.image-viewer');
-const fullImage = imageViewer.querySelector('.image-viewer__image');
-const fullImageDescription = imageViewer.querySelector('.image-viewer__description');
-
 class Card{
-  constructor({name, link}, templateSelector) {
+  constructor({name, link}, templateSelector, handleCardClick) {
     this.imageName = name;
     this.imageLink = link;
     this.templateSelector = templateSelector;
+    this.handleCardClick = handleCardClick;
   }
 
   _handleClickHeart(evt) {
@@ -19,20 +14,15 @@ class Card{
     evt.target.closest('.elements__element').remove();
   }
 
-  _handleOpenFullImage(evt) {
-    fullImage.src = evt.target.src;
-    fullImage.alt = evt.target.alt;
-    fullImageDescription.textContent = evt.target.alt;
-    openPopup(imageViewer);
-  }
-
   _setEventListeners(listenableElements) {
     //обработчик лайка карточки
     listenableElements.elementHeartSelector.addEventListener('click', this._handleClickHeart);
     //обработчик удаления карточки
     listenableElements.elementTrashSelector.addEventListener('click', this._handleRemoveCard);
     //обработчик открытия попапа с картинкой
-    listenableElements.elementImageSelector.addEventListener('click', this._handleOpenFullImage);
+    listenableElements.elementImageSelector.addEventListener('click', () => {
+      this.handleCardClick(this.imageLink, this.imageName);
+    });
   }
   
   createCard() {
