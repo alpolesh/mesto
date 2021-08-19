@@ -5,7 +5,6 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Место</title>
-  <link rel="stylesheet" href="./pages/index.css">
 </head>
 <body class="body">
   <div class="page">
@@ -14,7 +13,7 @@
       <div class="popup__popup-container">
         <form name="popup-form" class="popup__form" novalidate>
           <button class="popup__close" type="button">
-            <img src="./images/Close-Icon.svg" alt="иконка закрытия поп-апа" class="popup__close-icon">
+            <img src="<%=require('./images/Close-Icon.svg')%>" alt="иконка закрытия поп-апа" class="popup__close-icon">
           </button>
           <h2 class="popup__title">Редактировать профиль</h2>
           <input type="text" id="profile-name-input" class="popup__input popup__input_type_name" name="popup-name" placeholder="Имя" minlength="2" maxlength="40" required>
@@ -30,7 +29,7 @@
       <div class="popup__popup-container">
         <form name="popup-form" class="popup__form" novalidate>
           <button class="popup__close" type="button">
-            <img src="./images/Close-Icon.svg" alt="иконка закрытия поп-апа" class="popup__close-icon">
+            <img src="<%=require('./images/Close-Icon.svg')%>" alt="иконка закрытия поп-апа" class="popup__close-icon">
           </button>
           <h2 class="popup__title">Новое место</h2>
           <input type="text" id="place-name-input" class="popup__input popup__input_type_name" name="popup-name" placeholder="Название" minlength="2" maxlength="30" required>
@@ -46,25 +45,25 @@
       <figure class="image-viewer__container">
         <img src="https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg" alt="камчатка" class="image-viewer__image">
         <button class="image-viewer__close popup__close" type="button">
-          <img src="./images/Close-Icon.svg" alt="иконка закрытия изображения" class="image-viewer__close-icon">
+          <img src="<%=require('./images/Close-Icon.svg')%>" alt="иконка закрытия изображения" class="image-viewer__close-icon">
         </button>
         <figcaption class="image-viewer__description">Камчатка</figcaption>
       </figure>
     </div>
 
     <header class="header">
-      <img class="header__logo" src="./images/header-logo.svg" alt="логотип">
+      <img class="header__logo" src="<%=require('./images/header-logo.svg')%>" alt="логотип">
     </header>
 
     <main class="main">
       <section class="profile">
         <div class="profile__info-container">
-          <img src="./images/profile-avatar.jpg" alt="аватар" class="profile__avatar">
+          <img src="<%=require('./images/profile-avatar.jpg')%>" alt="аватар" class="profile__avatar">
           <div class="profile__info">
             <div class="profile__name-container">
               <h1 class="profile__name">Жак-Ив Кусто</h1>
               <button class="profile__edit-button-container" type="button">
-                <img src="./images/profile-edit-Button.svg" alt="изменить профиль" class="profile__edit-button">
+                <img src="<%=require('./images/profile-edit-Button.svg')%>" alt="изменить профиль" class="profile__edit-button">
               </button>
             </div>
             <p class="profile__description">Исследователь океана</p>
@@ -72,7 +71,7 @@
   
         </div>
         <button class="profile__add-button-container" type="button">
-          <img src="./images/profile-add-Button.svg" alt="добавить изображение" class="profile__add-button">
+          <img src="<%=require('./images/profile-add-Button.svg')%>" alt="добавить изображение" class="profile__add-button">
         </button>
       </section>
   
@@ -97,7 +96,5 @@
       <p class="footer__text">&copy; 2020 Mesto Russia</p>
     </footer>
   </div>
-
-  <script src="./scripts/script.js" type="module"></script>
 </body>
 </html>
