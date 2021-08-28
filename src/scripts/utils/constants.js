@@ -15,6 +15,7 @@ export const editButton = profileElement.querySelector('.profile__edit-button-co
 export const addButton = profileElement.querySelector('.profile__add-button-container');
 export const profileNameSelector = '.profile__name';
 export const profileDescriptionSelector = '.profile__description';
+export const profileAvatarSelector = '.profile__avatar';
 
 export const elementsListSelector = '.elements__list';
 export const templateSelectorCard = '#element-template';
