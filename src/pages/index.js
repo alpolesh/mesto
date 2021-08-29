@@ -4,6 +4,7 @@ import Card from '../scripts/components/Card.js';
 import FormValidator from '../scripts/components/FormValidator.js';
 import PopupWithImage from '../scripts/components/PopupWithImage.js';
 import PopupWithForm from '../scripts/components/PopupWithForm.js';
+import PopupWithConfirmation from '../scripts/components/PopupWithConfirmation.js';
 import Section from '../scripts/components/Section.js';
 import UserInfo from '../scripts/components/UserInfo.js';
 import * as constants from '../scripts/utils/constants.js';
@@ -36,18 +37,56 @@ apiUserInfo.getUserInfo()
   .then((result) => {
     userInfo.setUserInfo(result.name, result.about);
     userInfo.setUserAvatar(result.avatar);
+    userInfo.setUserId(result._id);
   })
   .catch((err) => {
     console.log(err);
   });  
 
+// Удаление карточки
+function deleteCardApi(cardId) {
+  return new Api({
+    baseUrl: `https://mesto.nomoreparties.co/v1/cohort-27/cards/${cardId}`,
+    headers: {
+      authorization: 'eff72599-eace-4e02-87e0-163764f5ab3c',
+      'Content-Type': 'application/json'
+    }
+  }); 
+}
+
+const popupDeleteCardConfirmation = new PopupWithConfirmation(
+  constants.popupDeleteConfirmationSelector,
+  (cardId) => {
+    deleteCardApi(cardId).deleteCard()
+      .then((res) => {
+        if (res.ok) {
+          popupDeleteCardConfirmation.deleteCardLocal();
+          return res.json();
+        } 
+        return Promise.reject(`Ошибка: ${res.status}`)
+      })
+      .catch((err) => console.log(err))
+      .finally(() => popupDeleteCardConfirmation.close())
+  }
+)
+
+popupDeleteCardConfirmation.setEventListeners();
+
+// Функция генерации карточки
 function createCard(item) {
   const card = new Card(
     item, 
     constants.templateSelectorCard, 
-    (imageSrc, imageDescription) => fullSizeImage.open(imageSrc, imageDescription)
+    {
+      handleCardClick: (imageSrc, imageDescription) => fullSizeImage.open(imageSrc, imageDescription),
+      handleTrashClick: (cardId, cardElement) => {
+        popupDeleteCardConfirmation.open();
+        popupDeleteCardConfirmation.setCardId(cardId);
+        popupDeleteCardConfirmation.setCardElement(cardElement);
+      }
+    }
   );
-  return card.generateCard()
+  return card.generateCard(userInfo.getUserId())
 }
 
 // Рендер изначального набора карточек
@@ -85,7 +124,7 @@ editFormValidator.enableValidation();
 const addCardFormValidator = new FormValidator(constants.configSelectors, constants.formAddCard);
 addCardFormValidator.enableValidation();
 
-// форма редактирования профиля
+// Форма изменения информации об юзере
 const apiUpdateUserInfo = new Api({
   baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-27/users/me',
   headers: {
@@ -115,6 +154,7 @@ const popupEditForm = new PopupWithForm(
     editFormValidator.cleanForm();
   }
 );
+
 popupEditForm.setEventListeners();
 
 // Открытие формы редактирования профиля
@@ -125,15 +165,30 @@ constants.editButton.addEventListener('click', () => {
   constants.formDescriptionEdit.value = userInfo.getUserInfo().description;
 });
 
-// форма добавления карточки
+// Форма добавления карточки
+const apiAddNewCard = new Api({
+  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-27/cards',
+  headers: {
+    authorization: 'eff72599-eace-4e02-87e0-163764f5ab3c',
+    'Content-Type': 'application/json'
+  }
+}); 
+
 const popupAddForm = new PopupWithForm(
   constants.popupAddCardSelector,
   (evt, formValues) => {
     evt.preventDefault();
-    const cardData = {name: formValues['popup-name'], link: formValues['popup-description']};
-    const newCard = createCard(cardData);
-    cardList.addItem(newCard);
-    popupAddForm.close();
+    apiAddNewCard.addNewCard(formValues['popup-name'], formValues['popup-description'])
+      .then((res) => {
+        if (res.ok) return res.json();
+        return Promise.reject(`Ошибка: ${res.status}`);
+      })
+      .then((card) => {
+        const newCard = createCard(card);
+        cardList.addNewItem(newCard);
+      })
+      .catch((err) => console.log(err))
+      .finally(() => popupAddForm.close())
   },
   () => {
     addCardFormValidator.cleanForm();
@@ -142,7 +197,7 @@ const popupAddForm = new PopupWithForm(
 
 popupAddForm.setEventListeners();
 
-//открытие формы добавления карточки
+// Открытие формы добавления карточки
 constants.addButton.addEventListener('click', () => {
   popupAddForm.open();
   addCardFormValidator.disableSubmitButton();

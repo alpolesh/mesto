@@ -40,6 +40,33 @@ class Api {
       })       
     )
   }
+
+  addNewCard(name, link) {
+    return (
+      fetch(this._baseUrl, {
+        method: 'POST',
+        headers: {
+          authorization: this._authorization,
+          'Content-Type': this._contentType
+        },
+        body: JSON.stringify({
+          name: name,
+          link: link
+        })
+      })       
+    )    
+  }
+
+  deleteCard() {
+    return (
+      fetch(this._baseUrl, {
+        method: 'DELETE',
+        headers: {
+          authorization: this._authorization
+        }
+      })
+    )    
+  }
 }
 
 export default Api;

@@ -10,6 +10,9 @@ export const formAddCard = popupAddCard.querySelector('.popup__form');
 export const formNameCard = popupAddCard.querySelector('.popup__input_type_name');
 export const formSourceCard = popupAddCard.querySelector('.popup__input_type_description');
 
+export const popupDeleteConfirmationSelector = '.popup-delete';
+export const popupDeleteConfirmation = document.querySelector(popupDeleteConfirmationSelector);
+
 export const profileElement = document.querySelector('.profile');
 export const editButton = profileElement.querySelector('.profile__edit-button-container');
 export const addButton = profileElement.querySelector('.profile__add-button-container');
