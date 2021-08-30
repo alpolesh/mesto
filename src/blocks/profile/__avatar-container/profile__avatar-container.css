@@ -1,0 +1,13 @@
+.profile__avatar-container {
+  display: flex;
+  position: relative;
+}
+
+.profile__avatar-container:hover .profile__change-avatar {
+  opacity: 1;
+}
+
+.profile__avatar-container:hover .profile__avatar{
+  opacity: 0.2;
+  cursor: pointer;
+}

@@ -1,0 +1,12 @@
+.profile__change-avatar {
+  position: absolute;
+  left: 43%;
+  top: 41%;
+  width: 26px;
+  height: 26px;
+  opacity: 0;
+}
+
+.profile__change-avatar:hover {
+  cursor: pointer;
+}

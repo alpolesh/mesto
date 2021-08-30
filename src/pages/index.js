@@ -47,6 +47,7 @@ apiUserInfo.getUserInfo()
 function deleteCardApi(cardId) {
   return new Api({
     baseUrl: `https://mesto.nomoreparties.co/v1/cohort-27/cards/${cardId}`,
+    method: 'DELETE',
     headers: {
       authorization: 'eff72599-eace-4e02-87e0-163764f5ab3c',
       'Content-Type': 'application/json'
@@ -72,21 +73,46 @@ const popupDeleteCardConfirmation = new PopupWithConfirmation(
 
 popupDeleteCardConfirmation.setEventListeners();
 
+// Добавление/удаление лайка
+function switchLikeApi(cardId, method) {
+  return new Api({
+    baseUrl: `https://mesto.nomoreparties.co/v1/cohort-27/cards/likes/${cardId}`,
+    method: method,
+    headers: {
+      authorization: 'eff72599-eace-4e02-87e0-163764f5ab3c',
+      'Content-Type': 'application/json'
+    }
+  }); 
+}
+
 // Функция генерации карточки
 function createCard(item) {
   const card = new Card(
     item, 
     constants.templateSelectorCard, 
     {
+      myUserId: userInfo.getUserId(),
       handleCardClick: (imageSrc, imageDescription) => fullSizeImage.open(imageSrc, imageDescription),
       handleTrashClick: (cardId, cardElement) => {
         popupDeleteCardConfirmation.open();
         popupDeleteCardConfirmation.setCardId(cardId);
         popupDeleteCardConfirmation.setCardElement(cardElement);
+      },
+      handleHeartClick: (cardId, isLiked) => {
+          switchLikeApi(cardId, isLiked ? 'DELETE' : 'PUT').toggleLike()
+          .then((res) => {
+            if (res.ok) return res.json();
+            return Promise.reject(`Ошибка: ${res.status}`)
+          })
+          .then((result) => {
+            card.updateLikes(result.likes.length);
+            card.toggleLike();
+          })
+          .catch((err) => console.log(err))
       }
     }
   );
-  return card.generateCard(userInfo.getUserId())
+  return card.generateCard()
 }
 
 // Рендер изначального набора карточек
@@ -127,6 +153,7 @@ addCardFormValidator.enableValidation();
 // Форма изменения информации об юзере
 const apiUpdateUserInfo = new Api({
   baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-27/users/me',
+  method: 'PATCH',
   headers: {
     authorization: 'eff72599-eace-4e02-87e0-163764f5ab3c',
     'Content-Type': 'application/json'
@@ -168,6 +195,7 @@ constants.editButton.addEventListener('click', () => {
 // Форма добавления карточки
 const apiAddNewCard = new Api({
   baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-27/cards',
+  method: 'POST',
   headers: {
     authorization: 'eff72599-eace-4e02-87e0-163764f5ab3c',
     'Content-Type': 'application/json'

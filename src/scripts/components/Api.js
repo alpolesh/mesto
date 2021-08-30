@@ -1,6 +1,7 @@
 class Api {
   constructor(options) {
     this._baseUrl = options.baseUrl;
+    this._method = options.method;
     this._authorization = options.headers.authorization;
     this._contentType = options.headers['Content-Type'];
   }
@@ -28,7 +29,7 @@ class Api {
   updateUserInfo(name, about) {
     return (
       fetch(this._baseUrl, {
-        method: 'PATCH',
+        method: this._method,
         headers: {
           authorization: this._authorization,
           'Content-Type': this._contentType
@@ -44,7 +45,7 @@ class Api {
   addNewCard(name, link) {
     return (
       fetch(this._baseUrl, {
-        method: 'POST',
+        method: this._method,
         headers: {
           authorization: this._authorization,
           'Content-Type': this._contentType
@@ -60,13 +61,35 @@ class Api {
   deleteCard() {
     return (
       fetch(this._baseUrl, {
-        method: 'DELETE',
+        method: this._method,
         headers: {
           authorization: this._authorization
         }
       })
     )    
   }
+
+  toggleLike() {
+    return (
+      fetch(this._baseUrl, {
+        method: this._method,
+        headers: {
+          authorization: this._authorization
+        }
+      })
+    )      
+  }
+
+  // removeLike() {
+  //   return (
+  //     fetch(this._baseUrl, {
+  //       method: this._method,
+  //       headers: {
+  //         authorization: this._authorization
+  //       }
+  //     })
+  //   )      
+  // }
 }
 
 export default Api;
