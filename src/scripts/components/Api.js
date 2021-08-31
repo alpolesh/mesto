@@ -8,7 +8,7 @@ class Api {
 
   getInitialCards() {
     return (
-      fetch(this._baseUrl, {
+      fetch(`${this._baseUrl}/cards`, {
         headers: {
           authorization: this._authorization
         }
@@ -18,7 +18,7 @@ class Api {
 
   getUserInfo() {
     return (
-      fetch(this._baseUrl, {
+      fetch(`${this._baseUrl}/users/me`, {
         headers: {
           authorization: this._authorization
         }
@@ -28,8 +28,8 @@ class Api {
 
   updateUserInfo(name, about) {
     return (
-      fetch(this._baseUrl, {
-        method: this._method,
+      fetch(`${this._baseUrl}/users/me`, {
+        method: 'PATCH',
         headers: {
           authorization: this._authorization,
           'Content-Type': this._contentType
@@ -44,8 +44,8 @@ class Api {
 
   addNewCard(name, link) {
     return (
-      fetch(this._baseUrl, {
-        method: this._method,
+      fetch(`${this._baseUrl}/cards`, {
+        method: 'POST',
         headers: {
           authorization: this._authorization,
           'Content-Type': this._contentType
@@ -58,10 +58,10 @@ class Api {
     )    
   }
 
-  deleteCard() {
+  deleteCard(cardId) {
     return (
-      fetch(this._baseUrl, {
-        method: this._method,
+      fetch(`${this._baseUrl}/cards/${cardId}`, {
+        method: 'DELETE',
         headers: {
           authorization: this._authorization
         }
@@ -69,10 +69,10 @@ class Api {
     )    
   }
 
-  toggleLike() {
+  toggleLike(cardId, method) {
     return (
-      fetch(this._baseUrl, {
-        method: this._method,
+      fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
+        method: method,
         headers: {
           authorization: this._authorization
         }
@@ -80,16 +80,31 @@ class Api {
     )      
   }
 
-  // removeLike() {
+  // removeLike(cardId) {
   //   return (
-  //     fetch(this._baseUrl, {
-  //       method: this._method,
+  //     fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
+  //       method: 'DELETE',
   //       headers: {
   //         authorization: this._authorization
   //       }
   //     })
   //   )      
   // }
+
+  changeAvatar(link) {
+    return (
+      fetch(`${this._baseUrl}/users/me/avatar`, {
+        method: 'PATCH',
+        headers: {
+          authorization: this._authorization,
+          'Content-Type': this._contentType
+        },
+        body: JSON.stringify({
+          avatar: link,
+        })
+      })       
+    )    
+  }
 }
 
 export default Api;

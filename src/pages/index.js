@@ -18,16 +18,16 @@ const userInfo = new UserInfo({
   avatarSelector: constants.profileAvatarSelector,
 })
 
-// Получение информации об юзере от сервера
-const apiUserInfo = new Api({
-  baseUrl: 'https://nomoreparties.co/v1/cohort-27/users/me',
+const api = new Api({
+  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-27',
   headers: {
     authorization: 'eff72599-eace-4e02-87e0-163764f5ab3c',
     'Content-Type': 'application/json'
   }
 }); 
 
-apiUserInfo.getUserInfo()
+// Получение и применение информации об юзере от сервера
+api.getUserInfo()
   .then((res) => {
     if (res.ok) {
       return res.json()
@@ -43,22 +43,11 @@ apiUserInfo.getUserInfo()
     console.log(err);
   });  
 
-// Удаление карточки
-function deleteCardApi(cardId) {
-  return new Api({
-    baseUrl: `https://mesto.nomoreparties.co/v1/cohort-27/cards/${cardId}`,
-    method: 'DELETE',
-    headers: {
-      authorization: 'eff72599-eace-4e02-87e0-163764f5ab3c',
-      'Content-Type': 'application/json'
-    }
-  }); 
-}
-
+// Форма удаления карточки
 const popupDeleteCardConfirmation = new PopupWithConfirmation(
   constants.popupDeleteConfirmationSelector,
   (cardId) => {
-    deleteCardApi(cardId).deleteCard()
+    api.deleteCard(cardId)
       .then((res) => {
         if (res.ok) {
           popupDeleteCardConfirmation.deleteCardLocal();
@@ -72,18 +61,6 @@ const popupDeleteCardConfirmation = new PopupWithConfirmation(
 )
 
 popupDeleteCardConfirmation.setEventListeners();
-
-// Добавление/удаление лайка
-function switchLikeApi(cardId, method) {
-  return new Api({
-    baseUrl: `https://mesto.nomoreparties.co/v1/cohort-27/cards/likes/${cardId}`,
-    method: method,
-    headers: {
-      authorization: 'eff72599-eace-4e02-87e0-163764f5ab3c',
-      'Content-Type': 'application/json'
-    }
-  }); 
-}
 
 // Функция генерации карточки
 function createCard(item) {
@@ -99,7 +76,7 @@ function createCard(item) {
         popupDeleteCardConfirmation.setCardElement(cardElement);
       },
       handleHeartClick: (cardId, isLiked) => {
-          switchLikeApi(cardId, isLiked ? 'DELETE' : 'PUT').toggleLike()
+          api.toggleLike(cardId, isLiked ? 'DELETE' : 'PUT')
           .then((res) => {
             if (res.ok) return res.json();
             return Promise.reject(`Ошибка: ${res.status}`)
@@ -116,14 +93,6 @@ function createCard(item) {
 }
 
 // Рендер изначального набора карточек
-const apiInitialCards = new Api({
-  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-27/cards',
-  headers: {
-    authorization: 'eff72599-eace-4e02-87e0-163764f5ab3c',
-    'Content-Type': 'application/json'
-  }
-}); 
-
 const cardList = new Section(
   (item) => {
     const card = createCard(item);
@@ -131,7 +100,7 @@ const cardList = new Section(
   }, 
   constants.elementsListSelector);
 
-apiInitialCards.getInitialCards()
+api.getInitialCards()
   .then((res) => {
     if (res.ok) return res.json();
     return Promise.reject(`Ошибка: ${res.status}`);
@@ -143,28 +112,22 @@ apiInitialCards.getInitialCards()
     console.log(err);
   }); 
 
-//Запуск валидации для всех форм
+// Запуск валидации для всех форм
 const editFormValidator = new FormValidator(constants.configSelectors, constants.formEdit);
 editFormValidator.enableValidation();
 
 const addCardFormValidator = new FormValidator(constants.configSelectors, constants.formAddCard);
 addCardFormValidator.enableValidation();
 
-// Форма изменения информации об юзере
-const apiUpdateUserInfo = new Api({
-  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-27/users/me',
-  method: 'PATCH',
-  headers: {
-    authorization: 'eff72599-eace-4e02-87e0-163764f5ab3c',
-    'Content-Type': 'application/json'
-  }
-}); 
+const changeAvatartFormValidator = new FormValidator(constants.configSelectors, constants.formChangeAvatar);
+changeAvatartFormValidator.enableValidation();
 
+// Форма редактирования профиля
 const popupEditForm = new PopupWithForm(
   constants.popupEditSelector,
   (evt, formValues) => {
     evt.preventDefault();
-    apiUpdateUserInfo.updateUserInfo(formValues['popup-name'], formValues['popup-description'])
+    api.updateUserInfo(formValues['popup-name'], formValues['popup-description'])
       .then((res) => {
         if(res.ok) return res.json();
         return Promise.reject(`Ошибка: ${res.status}`);
@@ -193,20 +156,11 @@ constants.editButton.addEventListener('click', () => {
 });
 
 // Форма добавления карточки
-const apiAddNewCard = new Api({
-  baseUrl: 'https://mesto.nomoreparties.co/v1/cohort-27/cards',
-  method: 'POST',
-  headers: {
-    authorization: 'eff72599-eace-4e02-87e0-163764f5ab3c',
-    'Content-Type': 'application/json'
-  }
-}); 
-
 const popupAddForm = new PopupWithForm(
   constants.popupAddCardSelector,
   (evt, formValues) => {
     evt.preventDefault();
-    apiAddNewCard.addNewCard(formValues['popup-name'], formValues['popup-description'])
+    api.addNewCard(formValues['popup-name'], formValues['popup-description'])
       .then((res) => {
         if (res.ok) return res.json();
         return Promise.reject(`Ошибка: ${res.status}`);
@@ -229,6 +183,35 @@ popupAddForm.setEventListeners();
 constants.addButton.addEventListener('click', () => {
   popupAddForm.open();
   addCardFormValidator.disableSubmitButton();
+})
+
+// Форма изменения аватара
+const popupChangeAvatar = new PopupWithForm(
+  constants.popupChangeAvatarSelector,
+  (evt, formValues) => {
+    evt.preventDefault();
+    api.changeAvatar(formValues['avatar-link'])
+      .then((res) => {
+        if (res.ok) return res.json();
+        return Promise.reject(`Ошибка: ${res.status}`);
+      })
+      .then((result) => {
+        userInfo.setUserAvatar(result.avatar);
+      })
+      .catch((err) => console.log(err))
+      .finally(() => popupChangeAvatar.close())
+  },
+  () => {
+    changeAvatartFormValidator.cleanForm();
+  }
+)
+
+popupChangeAvatar.setEventListeners();
+
+// Открытие формы изменения аватара
+constants.profileAvatarContainer.addEventListener('click', () => {
+  popupChangeAvatar.open();
+  changeAvatartFormValidator.disableSubmitButton();
 })
 
 

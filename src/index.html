@@ -53,6 +53,20 @@
       </div>
     </div>
 
+    <div class="popup popup-update-avatar">
+      <div class="popup__popup-container">
+        <form name="popup-form" class="popup__form" novalidate>
+          <button class="popup__close" type="button">
+            <img src="<%=require('./images/Close-Icon.svg')%>" alt="иконка закрытия поп-апа" class="popup__close-icon">
+          </button>
+          <h2 class="popup__title">Обновить аватар</h2>
+          <input type="url" id="avatar-link-input" class="popup__input popup__input_type_name" name="avatar-link" placeholder="Введите url" required>
+          <span class="popup__input-error avatar-link-input-error"></span>
+          <button type="submit" class="popup__submit">Сохранить</button>
+        </form>
+      </div>
+    </div>
+
     <div class="popup image-viewer">
       <figure class="image-viewer__container">
         <img src="https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg" alt="камчатка" class="image-viewer__image">
