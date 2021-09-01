@@ -127,6 +127,7 @@ const popupEditForm = new PopupWithForm(
   constants.popupEditSelector,
   (evt, formValues) => {
     evt.preventDefault();
+    popupEditForm.spin('Сохранение...');
     api.updateUserInfo(formValues['popup-name'], formValues['popup-description'])
       .then((res) => {
         if(res.ok) return res.json();
@@ -160,6 +161,7 @@ const popupAddForm = new PopupWithForm(
   constants.popupAddCardSelector,
   (evt, formValues) => {
     evt.preventDefault();
+    popupAddForm.spin('Создание...');
     api.addNewCard(formValues['popup-name'], formValues['popup-description'])
       .then((res) => {
         if (res.ok) return res.json();
@@ -190,6 +192,7 @@ const popupChangeAvatar = new PopupWithForm(
   constants.popupChangeAvatarSelector,
   (evt, formValues) => {
     evt.preventDefault();
+    popupChangeAvatar.spin('Сохранение...');
     api.changeAvatar(formValues['avatar-link'])
       .then((res) => {
         if (res.ok) return res.json();

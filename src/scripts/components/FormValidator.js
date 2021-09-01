@@ -2,6 +2,8 @@ class FormValidator {
   constructor(configSelectors, formElement) {
     this._inputSelector = configSelectors.inputSelector;
     this._submitButtonSelector = configSelectors.submitButtonSelector;
+    this._submitButtonElement = formElement.querySelector(this._submitButtonSelector);
+    this._submitButtonText = this._submitButtonElement.textContent;
     this._inactiveButtonClass = configSelectors.inactiveButtonClass;
     this._inputErrorClass = configSelectors.inputErrorClass;
     this._errorClass = configSelectors.errorClass;
@@ -83,6 +85,7 @@ class FormValidator {
     inputsList.forEach((inputElement) => {
       inputElement.classList.remove(this._inputErrorClass);
     })
+    this._submitButtonElement.textContent = this._submitButtonText;
   }
 
   enableSubmitButton() {
