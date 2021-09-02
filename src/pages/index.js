@@ -26,37 +26,17 @@ const api = new Api({
   }
 }); 
 
-// Получение и применение информации об юзере от сервера
-api.getUserInfo()
-  .then((res) => {
-    if (res.ok) {
-      return res.json()
-    }
-    return Promise.reject(`Ошибка: ${res.status}`);
-  })
-  .then((result) => {
-    userInfo.setUserInfo(result.name, result.about);
-    userInfo.setUserAvatar(result.avatar);
-    userInfo.setUserId(result._id);
-  })
-  .catch((err) => {
-    console.log(err);
-  });  
-
 // Форма удаления карточки
 const popupDeleteCardConfirmation = new PopupWithConfirmation(
   constants.popupDeleteConfirmationSelector,
   (cardId) => {
     api.deleteCard(cardId)
       .then((res) => {
-        if (res.ok) {
-          popupDeleteCardConfirmation.deleteCardLocal();
-          return res.json();
+        popupDeleteCardConfirmation.deleteCardLocal();
+        popupDeleteCardConfirmation.close()
         } 
-        return Promise.reject(`Ошибка: ${res.status}`)
-      })
+      )
       .catch((err) => console.log(err))
-      .finally(() => popupDeleteCardConfirmation.close())
   }
 )
 
@@ -77,10 +57,6 @@ function createCard(item) {
       },
       handleHeartClick: (cardId, isLiked) => {
           api.toggleLike(cardId, isLiked ? 'DELETE' : 'PUT')
-          .then((res) => {
-            if (res.ok) return res.json();
-            return Promise.reject(`Ошибка: ${res.status}`)
-          })
           .then((result) => {
             card.updateLikes(result.likes.length);
             card.toggleLike();
@@ -100,17 +76,17 @@ const cardList = new Section(
   }, 
   constants.elementsListSelector);
 
-api.getInitialCards()
-  .then((res) => {
-    if (res.ok) return res.json();
-    return Promise.reject(`Ошибка: ${res.status}`);
-  })
-  .then((cards) => {
-    cardList.renderItems(cards);    
-  })
-  .catch((err) => {
-    console.log(err);
-  }); 
+// Отрисовка профиля и карточек только после обоих успешных ответов от сервера 
+Promise.all([
+  api.getUserInfo(),
+  api.getInitialCards()
+])
+.then((values) => {
+  userInfo.setUserInfo(values[0].name, values[0].about);
+  userInfo.setUserAvatar(values[0].avatar);
+  userInfo.setUserId(values[0]._id);  
+  cardList.renderItems(values[1]); 
+})
 
 // Запуск валидации для всех форм
 const editFormValidator = new FormValidator(constants.configSelectors, constants.formEdit);
@@ -129,17 +105,13 @@ const popupEditForm = new PopupWithForm(
     evt.preventDefault();
     popupEditForm.spin('Сохранение...');
     api.updateUserInfo(formValues['popup-name'], formValues['popup-description'])
-      .then((res) => {
-        if(res.ok) return res.json();
-        return Promise.reject(`Ошибка: ${res.status}`);
-      })
       .then((result) => {
         userInfo.setUserInfo(result.name, result.about);
+        popupEditForm.close()
       })
       .catch((err) => {
         console.log(err);
       })
-      .finally(() => popupEditForm.close());
   },
   () => {
     editFormValidator.cleanForm();
@@ -150,10 +122,11 @@ popupEditForm.setEventListeners();
 
 // Открытие формы редактирования профиля
 constants.editButton.addEventListener('click', () => {
+  const userData = userInfo.getUserInfo();
   popupEditForm.open();
   editFormValidator.enableSubmitButton();
-  constants.formNameEdit.value = userInfo.getUserInfo().name;
-  constants.formDescriptionEdit.value = userInfo.getUserInfo().description;
+  constants.formNameEdit.value = userData.name;
+  constants.formDescriptionEdit.value = userData.description;
 });
 
 // Форма добавления карточки
@@ -163,16 +136,12 @@ const popupAddForm = new PopupWithForm(
     evt.preventDefault();
     popupAddForm.spin('Создание...');
     api.addNewCard(formValues['popup-name'], formValues['popup-description'])
-      .then((res) => {
-        if (res.ok) return res.json();
-        return Promise.reject(`Ошибка: ${res.status}`);
-      })
       .then((card) => {
         const newCard = createCard(card);
         cardList.addNewItem(newCard);
+        popupAddForm.close()
       })
       .catch((err) => console.log(err))
-      .finally(() => popupAddForm.close())
   },
   () => {
     addCardFormValidator.cleanForm();
@@ -194,15 +163,11 @@ const popupChangeAvatar = new PopupWithForm(
     evt.preventDefault();
     popupChangeAvatar.spin('Сохранение...');
     api.changeAvatar(formValues['avatar-link'])
-      .then((res) => {
-        if (res.ok) return res.json();
-        return Promise.reject(`Ошибка: ${res.status}`);
-      })
       .then((result) => {
         userInfo.setUserAvatar(result.avatar);
+        popupChangeAvatar.close()
       })
       .catch((err) => console.log(err))
-      .finally(() => popupChangeAvatar.close())
   },
   () => {
     changeAvatartFormValidator.cleanForm();

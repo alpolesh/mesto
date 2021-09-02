@@ -6,6 +6,13 @@ class Api {
     this._contentType = options.headers['Content-Type'];
   }
 
+  _getResponseData(res) {
+    if (res.ok) {
+      return res.json();    
+    }
+    return Promise.reject(`Ошибка: ${res.status}`); 
+  }
+
   getInitialCards() {
     return (
       fetch(`${this._baseUrl}/cards`, {
@@ -13,6 +20,7 @@ class Api {
           authorization: this._authorization
         }
       })
+      .then(res => this._getResponseData(res))
     )
   }
 
@@ -23,6 +31,7 @@ class Api {
           authorization: this._authorization
         }
       })
+      .then(res => this._getResponseData(res))
     )
   }
 
@@ -38,7 +47,8 @@ class Api {
           name: name,
           about: about
         })
-      })       
+      })
+      .then(res => this._getResponseData(res))             
     )
   }
 
@@ -54,7 +64,8 @@ class Api {
           name: name,
           link: link
         })
-      })       
+      })
+      .then(res => this._getResponseData(res))       
     )    
   }
 
@@ -66,6 +77,7 @@ class Api {
           authorization: this._authorization
         }
       })
+      .then(res => this._getResponseData(res)) 
     )    
   }
 
@@ -77,19 +89,9 @@ class Api {
           authorization: this._authorization
         }
       })
+      .then(res => this._getResponseData(res))
     )      
   }
-
-  // removeLike(cardId) {
-  //   return (
-  //     fetch(`${this._baseUrl}/cards/likes/${cardId}`, {
-  //       method: 'DELETE',
-  //       headers: {
-  //         authorization: this._authorization
-  //       }
-  //     })
-  //   )      
-  // }
 
   changeAvatar(link) {
     return (
@@ -102,7 +104,8 @@ class Api {
         body: JSON.stringify({
           avatar: link,
         })
-      })       
+      })
+      .then(res => this._getResponseData(res))       
     )    
   }
 }

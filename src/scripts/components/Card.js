@@ -36,7 +36,7 @@ class Card{
   }
 
   _checkLikeOwner() {
-    const isLikedByMyself = this._likes.find((item) => item._id === this._myUserId) ? true : false;
+    const isLikedByMyself = !!this._likes.find((item) => item._id === this._myUserId);
     if (isLikedByMyself) {
       this._isLiked = true;
       this._elementHeart.classList.add('elements__heart_active');
@@ -63,7 +63,7 @@ class Card{
     this._elementImage.alt = this._imageName;
     this._elementName.textContent = this._imageName;
     this._elementLikesNumber.textContent = this._likes.length;
-    if (this._myUserId != this._ownerId) {
+    if (this._myUserId !== this._ownerId) {
       this._elementTrash.remove();
     } 
     this._checkLikeOwner();
